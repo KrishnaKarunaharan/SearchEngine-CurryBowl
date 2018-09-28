@@ -1,5 +1,6 @@
-from bottle import route, run, request
+from bottle import route, run, request, response
 import json
+import operator
 
 myDict = {}
 
@@ -10,11 +11,11 @@ def submit():
 	for key in inputData:
 		myDict[key] = myDict.get(key, 0) + inputData[key]
 
-	print myDict
+	theBody = json.dumps({'hello': 'world'})
+	response.status = 200
+	response.headers['Access-Control-Allow-Origin'] = '*' #TODO: Check with the TA if this is okay
+	sorted_myDict = sorted(myDict.items(), key=operator.itemgetter(1))
 
-@route('/history', method ='get')
-def history():
-
-	return history
+	return dict(sorted_myDict)
 
 run(host='localhost', port=8080, debug=True)
