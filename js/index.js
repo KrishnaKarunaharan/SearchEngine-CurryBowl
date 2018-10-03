@@ -1,13 +1,13 @@
 
 function inputParsing() {
-    input = document.getElementById("input").value;
+    input = document.getElementById("keywords").value;
     localStorage.setItem("array", input);
 }
 
 
 function outputParsing() {
     document.write(
-        "<h2>Query Results</h2><table style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
+        "<h2>Query Results</h2><table id='results' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
     var string = localStorage.getItem("array");
     arr = string.match(/\S+/g)
 
@@ -33,9 +33,9 @@ function outputParsing() {
     xhttp.send(JSON.stringify(OutputList));
 
 	document.write(
-        "<br><br><h2>Popular Keywords</h2><table style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
+        "<br><br><h2>Popular Keywords</h2><table id='history' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
   	for (var obj in response) {
-        document.write("<tr><td>" + obj + "</td> <td>" + response[obj] + "</td></tr><tr>");
+        document.write("<tr><td>" + response[obj][0] + "</td> <td>" + response[obj][1] + "</td></tr><tr>");
     }
 	document.write("</table>");
 
