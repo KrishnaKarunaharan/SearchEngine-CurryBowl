@@ -22,7 +22,7 @@
 import urllib2
 import urlparse
 from BeautifulSoup import *
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 import re
 
 def attr(elem, attr):
@@ -48,8 +48,10 @@ class crawler(object):
         self._url_queue = [ ]
         self._doc_id_cache = { }
         self._word_id_cache = { }
-        self._resolved_word_id = OrderedDict()
-        self._resolved_doc_id = OrderedDict()
+        self._resolved_word_id = {}
+        self._resolved_doc_id = {}
+        self._inverted_index = {}
+        self._resolved_inverted_index = {}
 
         # functions to call when entering and exiting specific tags
         self._enter = defaultdict(lambda *a, **ka: self._visit_ignore)
@@ -236,9 +238,12 @@ class crawler(object):
                 continue
             self._curr_words.append((self.word_id(word), self._font_size))
             if self.word_id(word) in self._resolved_word_id:
-                self._resolved_word_id[self.word_id(word)][1].add(self._curr_doc_id)
+                self._inverted_index[self.word_id(word)].add(self._curr_doc_id)
+                self._resolved_inverted_index[word].add(self._resolved_doc_id[self._curr_doc_id])
             else:
-                self._resolved_word_id[self.word_id(word)] = [word, set([self._curr_doc_id])]
+                self._resolved_word_id[self.word_id(word)] = word
+                self._inverted_index[self.word_id(word)] = {self._curr_doc_id}
+                self._resolved_inverted_index[word] = {self._resolved_doc_id[self._curr_doc_id]}
 
 
     def _text_of(self, elem):
@@ -340,11 +345,11 @@ class crawler(object):
                     socket.close()
 
     def get_inverted_index(self):
-        pass
+        return self._inverted_index
+
+    def get_resolved_inverted_index(self):
+        return self._resolved_inverted_index
 
 if __name__ == "__main__":
     bot = crawler(None, "urls.txt")
     bot.crawl(depth=1)
-    print bot._resolved_word_id
-    print bot._resolved_doc_id
-    x = 5
