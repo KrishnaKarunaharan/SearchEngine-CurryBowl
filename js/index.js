@@ -28,22 +28,37 @@ function outputParsing() {
 	xhttp.onreadystatechange = function () {
     	if(xhttp.readyState === 4 && xhttp.status === 200) {
     		response = JSON.parse(xhttp.response);
+        document.write(
+            "<br><br><h2>Popular Keywords</h2><table id='history' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
+        for (var obj in response) {
+            document.write("<tr><td>" + response[obj][0] + "</td> <td>" + response[obj][1] + "</td></tr><tr>");
+        }
+        document.write("</table>");
+
+        localStorage.clear();
   		}
 	};
     xhttp.send(JSON.stringify(OutputList));
 
-	document.write(
-        "<br><br><h2>Popular Keywords</h2><table id='history' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
-  	for (var obj in response) {
-        document.write("<tr><td>" + response[obj][0] + "</td> <td>" + response[obj][1] + "</td></tr><tr>");
-    }
-	document.write("</table>");
 
-	
+}
 
+function outputServer() {
+    xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:8080/history", false);
+	xhttp.onreadystatechange = function () {
+    	if(xhttp.readyState === 4 && xhttp.status === 200) {
+    		response = JSON.parse(xhttp.response);
+            document.write(
+                "<br><br><h2>Popular Keywords</h2><table id='history' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
+            for (var obj in response) {
+                document.write("<tr><td>" + response[obj][0] + "</td> <td>" + response[obj][1] + "</td></tr><tr>");
+            }
+            document.write("</table>");
+  		}
+	};
+    xhttp.send(null);
 
-    localStorage.clear();
-    
 }
 
 

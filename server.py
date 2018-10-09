@@ -17,4 +17,12 @@ def submit():
 	first_20 = sorted_my_dict[-20:]
 	return json.dumps(first_20[::-1])
 
+@route('/history', method ='GET')
+def submit():
+	response.status = 200
+	response.headers['Access-Control-Allow-Origin'] = '*'
+	sorted_my_dict = sorted(myDict.items(), key=operator.itemgetter(1))
+	first_20 = sorted_my_dict[-20:]
+	return json.dumps(first_20[::-1])
+
 run(host='localhost', port=8080, debug=True)
