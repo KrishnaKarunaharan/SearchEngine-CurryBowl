@@ -345,9 +345,11 @@ class crawler(object):
                     socket.close()
 
     def get_inverted_index(self):
+        """Returns a dictionary mapping word IDs to the document IDs in which those words appear in"""
         return self._inverted_index
 
     def get_resolved_inverted_index(self):
+        """Returns a dictionary mapping words to the document URLs in which those words appear in"""
         return self._resolved_inverted_index
 
 if __name__ == "__main__":

@@ -1,2 +1,1 @@
 http://example.com
-file:///home/guava/Projects/CurryBowl/results.html
