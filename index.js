@@ -40,7 +40,6 @@ function outputParsing() {
 	};
     xhttp.send(JSON.stringify(OutputList));
 
-
 }
 
 function outputServer() {
@@ -60,5 +59,15 @@ function outputServer() {
     xhttp.send(null);
 
 }
+
+function login() {
+    xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:8080/login");
+	xhttp.onreadystatechange = function () {
+		window.location = xhttp.response;
+	}
+    xhttp.send(null);
+}
+
 
 

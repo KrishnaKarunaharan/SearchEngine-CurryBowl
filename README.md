@@ -8,3 +8,7 @@ and in a separate terminal, cd into the "tests" directory and run "python unit_t
 ## Cookie Issue
 
 You may have to enable 3rd party cookies on your browser for this lab to work as intended.
+
+## Breaker
+
+You have to do pip install beaker
