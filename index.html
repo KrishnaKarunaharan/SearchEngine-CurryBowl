@@ -3,7 +3,7 @@
 <meta charset="utf-8"/>
     <head>
         <title>Curry Bowl Search Engine</title>
-        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="index.css">
         <style>
         .center{
             display: block;
@@ -18,7 +18,9 @@
     </head>
     <body>
     <script src="index.js"></script>
-		<button class="btn" onclick="login()" style="float:right">Login</button>
+    <button class="btn" onclick="login()" style="float:right">Login</button>
+    <button class="btn" onclick="logout()" style="float:left">Log Out</button>
+    <p id ="ID" style="text-align: center;">[No User signed in]</p>
         <p class="center"> 
         <img src="logo.png" style="width:350px;height:240px;" class="center">
         <br>
@@ -27,7 +29,8 @@
         <a href="results.html"><input onclick="inputParsing()" type="submit" value="Search" class="center"></a>
         </p>
     </body>
-    <script type="text/javascript">
+     <script type="text/javascript">
          outputServer();
+         currentUser();
      </script>
 </html>

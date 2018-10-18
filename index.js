@@ -69,5 +69,26 @@ function login() {
     xhttp.send(null);
 }
 
+function logout() {
+    xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:8080/logout");
+	xhttp.onreadystatechange = function () {
+        userInfo = (xhttp.response);
+        window.location.replace("http://localhost:8080/");
+        document.getElementById("ID").textContent=userInfo;
+	}
+    xhttp.send(null);
+}
+
+function currentUser() {
+    xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:8080/CurrentUser");
+	xhttp.onreadystatechange = function () {
+        userInfo = (xhttp.response);
+        document.getElementById("ID").textContent=userInfo;
+	}
+    xhttp.send(null);
+    
+}
 
 
