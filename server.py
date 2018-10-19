@@ -22,7 +22,7 @@ users = {}
 currentUser = UserData("empty","empty","empty")
 
 ip = '0.0.0.0'
-port = 8080
+port = 80
 SCOPES = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email']
 
 @route('/<filename>')
@@ -52,8 +52,8 @@ def login():
 	response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
 	response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 	flow = flow_from_clientsecrets("clientSecrets/client_secrets.json",
-						scope= SCOPES, 
-						redirect_uri="http://" + ip +".xip.io:" + str(port) + "/redirect")
+						scope= SCOPES,
+					    redirect_uri="http://" + ip + ":" + str(port) + "/redirect")
 	uri = flow.step1_get_authorize_url()
 	return uri
 
@@ -64,7 +64,7 @@ def redirect_page():
 	flow = OAuth2WebServerFlow(client_id= "350489526647-llj98uv4bjlj2ki7dc94g40t62k940uu.apps.googleusercontent.com",
 							   client_secret= "msEV3dMER3rnUvKR_pnmGqK-",
 							   scope=SCOPES,
-							   redirect_uri="http://" + ip + ".xip.io:" + str(port) + "/redirect")
+							   redirect_uri="http://" + ip + ":" + str(port) + "/redirect")
 	credentials = flow.step2_exchange(code)
 	token = credentials.id_token['sub']
 
@@ -119,4 +119,4 @@ def  UserDisplay():
 		return "[No User signed in]"
 	return "Name: ", currentUser.name, " Email: ", currentUser.email
 
-run(host='0.0.0.0', port=8080, debug=True)
+run(host=ip, port=port, debug=True)
