@@ -24,7 +24,7 @@ function outputParsing() {
 	document.write("</table>");
 
 	xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://localhost:8080/submit", false);
+    xhttp.open("POST", "http://0.0.0.0:8080/submit", false);
 	xhttp.onreadystatechange = function () {
     	if(xhttp.readyState === 4 && xhttp.status === 200) {
     		response = JSON.parse(xhttp.response);
@@ -44,7 +44,7 @@ function outputParsing() {
 
 function outputServer() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost:8080/history", false);
+    xhttp.open("GET", "http://0.0.0.0:8080/history", false);
 	xhttp.onreadystatechange = function () {
     	if(xhttp.readyState === 4 && xhttp.status === 200) {
     		response = JSON.parse(xhttp.response);
@@ -62,7 +62,7 @@ function outputServer() {
 
 function login() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost:8080/login");
+    xhttp.open("GET", "http://0.0.0.0:8080/login");
 	xhttp.onreadystatechange = function () {
 		window.location = xhttp.response;
 	}
@@ -71,7 +71,7 @@ function login() {
 
 function logout() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost:8080/logout");
+    xhttp.open("GET", "http://0.0.0.0:8080/logout");
 	xhttp.onreadystatechange = function () {
         userInfo = (xhttp.response);
         window.location.replace("http://localhost:8080/");
@@ -82,7 +82,7 @@ function logout() {
 
 function currentUser() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost:8080/CurrentUser");
+    xhttp.open("GET", "http://0.0.0.0:8080/CurrentUser");
 	xhttp.onreadystatechange = function () {
         userInfo = (xhttp.response);
         document.getElementById("ID").textContent=userInfo;
