@@ -22,8 +22,8 @@ recent = []
 users = {}
 current_user = UserData("empty", "empty", "empty")
 
-ip = 'localhost'
-port = 8080
+ip = '0.0.0.0'
+port = 80
 SCOPES = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email']
 
 
