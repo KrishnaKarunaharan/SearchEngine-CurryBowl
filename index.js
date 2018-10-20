@@ -2,12 +2,10 @@
 function inputParsing() {
     input = document.getElementById("keywords").value;
     localStorage.setItem("array", input);
+    submit();
 }
 
-
-function outputParsing() {
-    document.write(
-        "<h2>Query Results</h2><table id='results' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
+function submit() {
     var string = localStorage.getItem("array");
     arr = string.match(/\S+/g)
 
@@ -18,53 +16,76 @@ function outputParsing() {
        OutputList[arr[i]] = (OutputList[arr[i]] || 0) + 1;
     }
 
+    var content = "";
     for (var obj in OutputList) {
-        document.write("<tr><td>" + obj + "</td> <td>" + OutputList[obj] + "</td></tr><tr>");
+        content += "<tr><td>" + obj + "</td> <td>" + OutputList[obj] + "</td></tr><tr>";
     }
-	document.write("</table>");
+
+    document.getElementById("results_content").innerHTML = content;
+    document.getElementById("results_div").style.display = "block";
 
 	xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/submit", false);
+    xhttp.open("POST", "/submit");
 	xhttp.onreadystatechange = function () {
-    	if(xhttp.readyState === 4 && xhttp.status === 200) {
-    		response = JSON.parse(xhttp.response);
-        document.write(
-            "<br><br><h2>Popular Keywords</h2><table id='history' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
-        for (var obj in response) {
-            document.write("<tr><td>" + response[obj][0] + "</td> <td>" + response[obj][1] + "</td></tr><tr>");
+        if(xhttp.readyState === 4 && xhttp.status === 200) {
+           	history();
         }
-        document.write("</table>");
-
-        localStorage.clear();
-  		}
 	};
-    xhttp.send(JSON.stringify(OutputList));
+    xhttp.send(string);
 
 }
 
-function outputServer() {
+function history() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/history", false);
+    xhttp.open("GET", "/history");
 	xhttp.onreadystatechange = function () {
     	if(xhttp.readyState === 4 && xhttp.status === 200) {
-    		response = JSON.parse(xhttp.response);
-            document.write(
-                "<br><br><h2>Popular Keywords</h2><table id='history' style='width:100%' align='right'><tr><th>Word</th><th>Count</th> </tr>");
-            for (var obj in response) {
-                document.write("<tr><td>" + response[obj][0] + "</td> <td>" + response[obj][1] + "</td></tr><tr>");
+            if (xhttp.response == "") {
+                return 0;
             }
-            document.write("</table>");
+    		response = JSON.parse(xhttp.response);
+            var content = "";
+
+            for (var obj in response) {
+                content += "<tr><td>" + response[obj][0] + "</td> <td>" + response[obj][1] + "</td></tr>";
+            }
+            document.getElementById("history_content").innerHTML = content;
+            document.getElementById("history_div").style.display = "block";
+            recent();
   		}
 	};
     xhttp.send(null);
 
 }
 
+function recent() {
+    xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/recent");
+	xhttp.onreadystatechange = function () {
+    	if(xhttp.readyState === 4 && xhttp.status === 200) {
+            if (xhttp.response == "") {
+                return 0;
+            }
+    		response = JSON.parse(xhttp.response);
+            var content = "";
+
+            for (var obj in response) {
+                content += "<tr><td>" + response[obj] + "</td></tr>";
+            }
+            document.getElementById("recent_content").innerHTML = content;
+            document.getElementById("recent_div").style.display = "block";
+  		}
+	};
+    xhttp.send(null);
+}
+
 function login() {
     xhttp = new XMLHttpRequest();
     xhttp.open("GET", "/login");
 	xhttp.onreadystatechange = function () {
-		window.location = xhttp.response;
+        if(xhttp.readyState === 4 && xhttp.status === 200) {
+		    window.location = xhttp.response;
+        }
 	}
     xhttp.send(null);
 }
@@ -73,19 +94,24 @@ function logout() {
     xhttp = new XMLHttpRequest();
     xhttp.open("GET", "/logout");
 	xhttp.onreadystatechange = function () {
-        userInfo = (xhttp.response);
-        window.location.replace("");
-        document.getElementById("ID").textContent=userInfo;
+        if(xhttp.readyState === 4 && xhttp.status === 200) {
+            userInfo = (xhttp.response);
+            window.location.replace("");
+            document.getElementById("ID").textContent=userInfo;
+        }
+
 	}
     xhttp.send(null);
 }
 
 function currentUser() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/CurrentUser");
+    xhttp.open("GET", "/current_user");
 	xhttp.onreadystatechange = function () {
-        userInfo = (xhttp.response);
-        document.getElementById("ID").textContent=userInfo;
+        if(xhttp.readyState === 4 && xhttp.status === 200) {
+            userInfo = (xhttp.response);
+            document.getElementById("ID").textContent=userInfo;
+        }
 	}
     xhttp.send(null);
     

@@ -10,27 +10,71 @@
             margin-left: auto;
             margin-right: auto;
             width: 40%;
-         }
-        table, th, td {
+        }
+        table{
+            border: 1px solid black;
+            margin-bottom: 1%;
+        }
+        th, td {
             border: 1px solid black;
         }
         </style>
     </head>
     <body>
-    <script src="index.js"></script>
-    <button class="btn" onclick="login()" style="float:right">Login</button>
-    <button class="btn" onclick="logout()" style="float:left">Log Out</button>
-    <p id ="ID" style="text-align: center;">[No User signed in]</p>
-        <p class="center"> 
-        <img src="logo.png" style="width:350px;height:240px;" class="center">
-        <br>
-        <input id='keywords' type="text" name="" value="" class="center">
-        <br>
-        <a href="results.html"><input onclick="inputParsing()" type="submit" value="Search" class="center"></a>
+        <script src="index.js"></script>
+        <button class="btn" onclick="login()" style="float:right">Login</button>
+        <button class="btn" onclick="logout()" style="float:left">Log Out</button>
+        <p id ="ID" style="text-align: center;">[No User signed in]</p>
+        <p class="center">
+            <img src="logo.png" style="width:350px;height:240px;" class="center">
+            <br>
+            <input id='keywords' type="text" name="" value="" class="center">
+            <br>
+            <input onclick="inputParsing()" type="submit" value="Search" class="center">
         </p>
+
+
+        <div id="results_div" style='display:none'>
+            <thead style='display:none'>Query Results</thead>
+            <table id='results' style='width:100%' align='right'>
+                <tr>
+                    <th>Word</th>
+                    <th>Count</th>
+                    <tbody id="results_content">
+                    </tbody>
+                </tr>
+            </table>
+
+        </div>
+
+        <div id="history_div" style='display:none'>
+            <thead>Popular Keywords</thead>
+            <table id='history' style='width:100%' align='right'>
+                <tr>
+                    <th>Word</th>
+                    <th>Count</th>
+                    <tbody id="history_content">
+                    </tbody>
+                </tr>
+            </table>
+        </div>
+
+        <div id="recent_div" style='display:none'>
+            <thead>Recent Searches</thead>
+            <table id='recent' style='width:100%' align='right'>
+                <tr>
+                    <th>Word</th>
+                    <tbody id="recent_content">
+                    </tbody>
+                </tr>
+            </table>
+        </div>
+
     </body>
-     <script type="text/javascript">
-         outputServer();
-         currentUser();
-     </script>
+
+    <script type="text/javascript">
+        currentUser();
+        history();
+        recent();
+</script>
 </html>
