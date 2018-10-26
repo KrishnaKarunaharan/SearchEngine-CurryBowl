@@ -97,7 +97,7 @@ function logout() {
         if(xhttp.readyState === 4 && xhttp.status === 200) {
             userInfo = (xhttp.response);
             window.location.replace("");
-            document.getElementById("ID").textContent=userInfo;
+            document.getElementById("user").textContent=userInfo;
         }
 
 	}
@@ -110,7 +110,15 @@ function currentUser() {
 	xhttp.onreadystatechange = function () {
         if(xhttp.readyState === 4 && xhttp.status === 200) {
             userInfo = (xhttp.response);
-            document.getElementById("ID").textContent=userInfo;
+            document.getElementById("user").textContent=userInfo;
+            if (userInfo === ""){
+                document.getElementById("login").setAttribute('onclick','login()');
+                document.getElementById("login").innerText= "Login";
+            }
+            else {
+                document.getElementById("login").setAttribute('onclick','logout()');
+                document.getElementById("login").innerText= "Logout";
+            }
         }
 	}
     xhttp.send(null);

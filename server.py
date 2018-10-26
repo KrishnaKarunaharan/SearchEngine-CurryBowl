@@ -41,13 +41,13 @@ def home():
 def logout():
 	global current_user, words, recent
 	if current_user.email == "empty":
-		return "[No User signed in]"  
+		return ""
 	users[current_user.email].search_history = words
 	users[current_user.email].search_recent = recent
 	words = {}
 	recent = []
 	current_user = UserData("empty", "empty", "empty")
-	return "[No User signed in]"
+	return ""
 
 
 @route('/login', method='GET')
@@ -138,7 +138,7 @@ def recent():
 @route('/current_user', method='GET')
 def user():
 	if current_user.email == "empty":
-		return "[No User signed in]"
+		return ""
 	return "Name: ", current_user.name, " Email: ", current_user.email
 
 
