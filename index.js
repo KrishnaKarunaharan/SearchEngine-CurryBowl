@@ -25,7 +25,7 @@ function submit() {
     document.getElementById("results_div").style.display = "block";
 
 	xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/submit");
+    xhttp.open("POST", "/submit", false);
 	xhttp.onreadystatechange = function () {
         if(xhttp.readyState === 4 && xhttp.status === 200) {
            	history();
@@ -37,7 +37,7 @@ function submit() {
 
 function history() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/history");
+    xhttp.open("GET", "/history", false);
 	xhttp.onreadystatechange = function () {
     	if(xhttp.readyState === 4 && xhttp.status === 200) {
             if (xhttp.response == "") {
@@ -60,7 +60,7 @@ function history() {
 
 function recent() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/recent");
+    xhttp.open("GET", "/recent", false);
 	xhttp.onreadystatechange = function () {
     	if(xhttp.readyState === 4 && xhttp.status === 200) {
             if (xhttp.response == "") {
@@ -81,7 +81,7 @@ function recent() {
 
 function login() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/login");
+    xhttp.open("GET", "/login", false);
 	xhttp.onreadystatechange = function () {
         if(xhttp.readyState === 4 && xhttp.status === 200) {
 		    window.location = xhttp.response;
@@ -92,7 +92,7 @@ function login() {
 
 function logout() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/logout");
+    xhttp.open("GET", "/logout", false);
 	xhttp.onreadystatechange = function () {
         if(xhttp.readyState === 4 && xhttp.status === 200) {
             userInfo = (xhttp.response);
@@ -106,7 +106,7 @@ function logout() {
 
 function currentUser() {
     xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/current_user");
+    xhttp.open("GET", "/current_user", false);
 	xhttp.onreadystatechange = function () {
         if(xhttp.readyState === 4 && xhttp.status === 200) {
             userInfo = (xhttp.response);
