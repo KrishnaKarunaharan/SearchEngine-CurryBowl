@@ -22,11 +22,11 @@ recent = []
 users = {}
 current_user = UserData("empty", "empty", "empty")
 
-ip = 'localhost'
-port = 8080
+ip = '0.0.0.0'
+port = 80
 SCOPES = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email']
 
-
+base_url = "http://ec2-18-232-120-67.compute-1.amazonaws.com"
 @route('/<filename>')
 def file(filename):
 	return static_file(filename, root='')
@@ -57,7 +57,7 @@ def login():
 	response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 	flow = flow_from_clientsecrets("clientSecrets/client_secrets.json",
 								   scope=SCOPES,
-								   redirect_uri="http://" + ip + ":" + str(port) + "/redirect")
+								   redirect_uri=base_url + "/redirect")
 	uri = flow.step1_get_authorize_url()
 	return uri
 
@@ -69,7 +69,7 @@ def redirect_page():
 	flow = OAuth2WebServerFlow(client_id= "350489526647-llj98uv4bjlj2ki7dc94g40t62k940uu.apps.googleusercontent.com",
 								client_secret="msEV3dMER3rnUvKR_pnmGqK-",
 								scope=SCOPES,
-								redirect_uri="http://" + ip + ":" + str(port) + "/redirect")
+								redirect_uri=base_url + "/redirect")
 	credentials = flow.step2_exchange(code)
 
 	http = httplib2.Http()
