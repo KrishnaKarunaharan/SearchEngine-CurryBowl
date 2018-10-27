@@ -1,5 +1,8 @@
 # CurryBowl
 
+## Running locally
+Please use the `master` branch when running the webserver locally by running the python script `server.py`. When running on an EC2 instance, use the `aws-ec2` branch and run the script as `sudo`.
+
 ## Running Unit Tests
 
 To run unit tests, go into the `tests` directory and run the python script `test_server.py` and in a separate terminal, go into the `tests` directory and run the python script `unit_tests.py`
