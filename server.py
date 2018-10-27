@@ -26,7 +26,7 @@ ip = 'localhost'
 port = 8080
 SCOPES = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email']
 
-base_url = "http://" + ip + ":" + str(port)
+base_url = "http://ec2-18-232-120-67.compute-1.amazonaws.com"
 @route('/<filename>')
 def file(filename):
 	return static_file(filename, root='')
