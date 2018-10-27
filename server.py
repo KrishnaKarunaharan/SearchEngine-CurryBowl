@@ -22,11 +22,11 @@ recent = []
 users = {}
 current_user = UserData("empty", "empty", "empty")
 
-ip = '0.0.0.0'
-port = 80
+ip = 'localhost'
+port = 8080
 SCOPES = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email']
 
-base_url = "http://ec2-18-232-120-67.compute-1.amazonaws.com"
+base_url = "http://" + ip + ":" + str(port)
 @route('/<filename>')
 def file(filename):
 	return static_file(filename, root='')
