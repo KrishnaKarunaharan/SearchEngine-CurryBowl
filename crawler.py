@@ -52,6 +52,7 @@ class crawler(object):
         self._resolved_doc_id = {}
         self._inverted_index = {}
         self._resolved_inverted_index = {}
+        self.page_rank = {}
 
         # functions to call when entering and exiting specific tags
         self._enter = defaultdict(lambda *a, **ka: self._visit_ignore)
@@ -165,7 +166,8 @@ class crawler(object):
 
         doc_id = self._mock_insert_document(url)
         self._doc_id_cache[url] = doc_id
-        self._resolved_doc_id[doc_id] = url
+        if url not in self._resolved_doc_id:
+            self._resolved_doc_id[doc_id] = [url, [], 0]
         return doc_id
 
     def _fix_url(self, curr_url, rel):
@@ -184,7 +186,8 @@ class crawler(object):
     def add_link(self, from_doc_id, to_doc_id):
         """Add a link into the database, or increase the number of links between
         two pages in the database."""
-        # TODO
+        self._resolved_doc_id[from_doc_id][1].append(to_doc_id)
+
 
     def _visit_title(self, elem):
         """Called when visiting the <title> tag."""
@@ -239,11 +242,11 @@ class crawler(object):
             self._curr_words.append((self.word_id(word), self._font_size))
             if self.word_id(word) in self._resolved_word_id:
                 self._inverted_index[self.word_id(word)].add(self._curr_doc_id)
-                self._resolved_inverted_index[word].add(self._resolved_doc_id[self._curr_doc_id])
+                self._resolved_inverted_index[word].add(self._resolved_doc_id[self._curr_doc_id][0])
             else:
                 self._resolved_word_id[self.word_id(word)] = word
                 self._inverted_index[self.word_id(word)] = {self._curr_doc_id}
-                self._resolved_inverted_index[word] = {self._resolved_doc_id[self._curr_doc_id]}
+                self._resolved_inverted_index[word] = {self._resolved_doc_id[self._curr_doc_id][0]}
 
 
     def _text_of(self, elem):
@@ -351,6 +354,46 @@ class crawler(object):
     def get_resolved_inverted_index(self):
         """Returns a dictionary mapping words to the document URLs in which those words appear in"""
         return self._resolved_inverted_index
+
+    def get_page_rank(self,  num_iterations=20, initial_pr=1.0):
+        """Function based on http://www.petergoodman.me/courses/2011/csc326/project/pagerank.pys"""
+        from collections import defaultdict
+        import numpy as np
+
+        page_rank = defaultdict(lambda: float(initial_pr))
+        num_outgoing_links = defaultdict(float)
+        incoming_link_sets = defaultdict(set)
+        incoming_links = defaultdict(lambda: np.array([]))
+        damping_factor = 0.85
+
+        # collect the number of outbound links and the set of all incoming documents
+        # for every document
+        for src_doc in self._resolved_doc_id:
+            for dst_doc in self._resolved_doc_id[src_doc][1]:
+                num_outgoing_links[src_doc] += 1.0
+                incoming_link_sets[dst_doc].add(src_doc)
+
+        # convert each set of incoming links into a numpy array
+        for doc_id in incoming_link_sets:
+            incoming_links[doc_id] = np.array([from_doc_id for from_doc_id in incoming_link_sets[doc_id]])
+
+        num_documents = float(len(num_outgoing_links))
+        lead = (1.0 - damping_factor) / num_documents
+        partial_PR = np.vectorize(lambda doc_id: page_rank[doc_id] / num_outgoing_links[doc_id])
+
+        for _ in xrange(num_iterations):
+            for doc_id in num_outgoing_links:
+                tail = 0.0
+                if len(incoming_links[doc_id]):
+                    tail = damping_factor * partial_PR(incoming_links[doc_id]).sum()
+                page_rank[doc_id] = lead + tail
+
+        self.page_rank = page_rank
+        return page_rank
+
+    def flush(self, database):
+        pass
+
 
 if __name__ == "__main__":
     bot = crawler(None, "urls.txt")
