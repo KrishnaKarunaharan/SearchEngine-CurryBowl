@@ -24,6 +24,7 @@ import urlparse
 from BeautifulSoup import *
 from collections import defaultdict
 import re
+import sqlite3 as lite
 
 def attr(elem, attr):
     """An html attribute from an html element. E.g. <a href="">, then
@@ -52,7 +53,7 @@ class crawler(object):
         self._resolved_doc_id = {}
         self._inverted_index = {}
         self._resolved_inverted_index = {}
-        self.page_rank = {}
+        self._page_rank = {}
 
         # functions to call when entering and exiting specific tags
         self._enter = defaultdict(lambda *a, **ka: self._visit_ignore)
@@ -167,7 +168,7 @@ class crawler(object):
         doc_id = self._mock_insert_document(url)
         self._doc_id_cache[url] = doc_id
         if url not in self._resolved_doc_id:
-            self._resolved_doc_id[doc_id] = [url, [], 0]
+            self._resolved_doc_id[doc_id] = [url, []]
         return doc_id
 
     def _fix_url(self, curr_url, rel):
@@ -388,13 +389,31 @@ class crawler(object):
                     tail = damping_factor * partial_PR(incoming_links[doc_id]).sum()
                 page_rank[doc_id] = lead + tail
 
-        self.page_rank = page_rank
+        self._page_rank = page_rank
         return page_rank
 
     def flush(self, database):
+        conn = lite.connect(database)
+        c = conn.cursor()
+        c.execute("CREATE TABLE IF NOT EXISTS words (word text, id integer)")
+        for word_id, word in self._resolved_word_id.items():
+            c.execute("INSERT INTO words values (?,?)", (word, word_id))
+
+        c.execute("CREATE TABLE IF NOT EXISTS inverted (word_id integer, doc_ids text)")
+        for word_id, doc_ids in self._inverted_index.items():
+            c.execute("INSERT INTO inverted values (?,?)", (word_id, ",".join(str(x) for x in doc_ids)))
+
+        c.execute("CREATE TABLE IF NOT EXISTS docs (id integer, doc text, score real)")
+        for doc_id, doc in self._resolved_doc_id.items():
+            if doc_id in self._page_rank:
+                c.execute("INSERT INTO docs values (?,?,?)", (doc_id, doc[0], self._page_rank[doc_id]))
+
+        conn.commit()
         pass
 
 
 if __name__ == "__main__":
     bot = crawler(None, "urls.txt")
     bot.crawl(depth=1)
+    bot.get_page_rank()
+    bot.flush("test.db")
