@@ -409,7 +409,7 @@ class crawler(object):
                 c.execute("INSERT INTO docs values (?,?,?)", (doc_id, doc[0], self._page_rank[doc_id]))
 
         conn.commit()
-        pass
+        conn.close()
 
 
 if __name__ == "__main__":
