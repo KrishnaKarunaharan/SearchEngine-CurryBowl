@@ -168,7 +168,7 @@ class crawler(object):
         doc_id = self._mock_insert_document(url)
         self._doc_id_cache[url] = doc_id
         if url not in self._resolved_doc_id:
-            self._resolved_doc_id[doc_id] = [url, []]
+            self._resolved_doc_id[doc_id] = [url, set()]
         return doc_id
 
     def _fix_url(self, curr_url, rel):
@@ -187,7 +187,7 @@ class crawler(object):
     def add_link(self, from_doc_id, to_doc_id):
         """Add a link into the database, or increase the number of links between
         two pages in the database."""
-        self._resolved_doc_id[from_doc_id][1].append(to_doc_id)
+        self._resolved_doc_id[from_doc_id][1].add(to_doc_id)
 
 
     def _visit_title(self, elem):
@@ -416,4 +416,4 @@ if __name__ == "__main__":
     bot = crawler(None, "urls.txt")
     bot.crawl(depth=1)
     bot.get_page_rank()
-    bot.flush("test.db")
+    bot.flush("currybowl.db")
