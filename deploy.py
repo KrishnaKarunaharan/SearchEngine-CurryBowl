@@ -26,4 +26,9 @@ while inst.update() != 'running':
     pass
 
 print "\n",inst,"started with IP address",inst.ip_address
+
+print "Crawling and initializing database..."
+import run_backend_test
+
+print "Deploying files..."
 os.system("rsync -e \"ssh -i" + key +"\" -av " + project_dir + " ubuntu@" + inst.ip_address + ":~")
