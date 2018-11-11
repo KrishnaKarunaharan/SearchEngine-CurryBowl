@@ -4,7 +4,7 @@ import os
 bot = crawler(None, "urls.txt")
 bot.crawl(depth=1)
 pr = bot.get_page_rank()
-print bot._resolved_doc_id
+
 resolved_pr = {}
 for url_id,score in pr.items():
     resolved_pr[bot._resolved_doc_id[url_id][0]]=score
