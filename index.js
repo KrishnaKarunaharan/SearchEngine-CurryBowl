@@ -1,11 +1,12 @@
 
 function inputParsing() {
-    input = document.getElementById("keywords").value;
+    input = (document.getElementById("keywords").value).toLowerCase();
     localStorage.setItem("array", input);
     submit();
 }
 
 function submit() {
+
     var string = localStorage.getItem("array");
     arr = string.match(/\S+/g)
 
@@ -21,18 +22,57 @@ function submit() {
         content += "<tr><td>" + obj + "</td> <td>" + OutputList[obj] + "</td></tr><tr>";
     }
 
-    document.getElementById("results_content").innerHTML = content;
-    document.getElementById("results_div").style.display = "block";
+    //document.getElementById("results_content").innerHTML = content;
+    //document.getElementById("results_div").style.display = "block";
+
 
 	xhttp = new XMLHttpRequest();
+    var startTime = Date.now();
     xhttp.open("POST", "/submit", false);
 	xhttp.onreadystatechange = function () {
         if(xhttp.readyState === 4 && xhttp.status === 200) {
-           	history();
+           	//history();
+
+            /* ADDED FOR LAB 3*/
+            response = JSON.parse(xhttp.response);
+            var content = "";
+            var numberResults; 
+            var elapsedTime = ((Date.now() - startTime) / 1000).toFixed(3);
+            (response[0] == null) ? numberResults = 0 : numberResults = response.length;
+            document.getElementById("numberResults").innerHTML = "About " + numberResults + " results (" + elapsedTime + " seconds)"; 
+
+            if (numberResults > 5){
+                document.getElementById("loadMore").style.visibility = "visible";
+            }
+            for (var obj in response) {
+                if (obj == 5 ){
+                    localStorage.setItem("loadMore", response.slice(5,response.length));
+                    break;
+                }    
+                content += "<p><a href=" + response[obj]  + "> " + response[obj] + "</a></p>";
+            }
+            document.getElementById("crawlerResults").innerHTML = content;          
+
         }
 	};
     xhttp.send(string);
 
+}
+
+function LoadMore(){
+    var response = localStorage.getItem("loadMore").split(",");
+    var vis = "hidden";
+    for (var obj in response) {
+        if (obj == 5 ){
+            localStorage.setItem("loadMore", response.slice(5,response.length));
+            vis = "visible"
+            break;
+        }    
+        content =  document.getElementById("crawlerResults").innerHTML;
+        content += "<p><a href=" + response[obj]  + "> " + response[obj] + "</a></p>";
+        document.getElementById("crawlerResults").innerHTML = content
+    }
+    document.getElementById("loadMore").style.visibility = vis;
 }
 
 function history() {
