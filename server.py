@@ -6,6 +6,7 @@ from bottle import route, run, request, response, redirect, static_file
 import json
 import operator
 import httplib2
+import sqlite3
 
 
 class UserData:
@@ -96,24 +97,67 @@ def redirect_page():
 
 @route('/submit', method='POST')
 def submit():
-	if current_user.email == "empty":
-		return
-	line = request.body.read()
+	# COMMENTED FOR LAB 3
+	#if current_user.email == "empty":
+	#	return
+	#line = request.body.read()
 
-	if line in recent:
-		del recent[recent.index(line)]
+	#if line in recent:
+	#	del recent[recent.index(line)]
 
-	recent.insert(0, line)
-	if len(recent) > 10:
-		del recent[-1]
+	#recent.insert(0, line)
+	#if len(recent) > 10:
+	#	del recent[-1]
 
-	input_data = line.split()
+	#input_data = line.split()
 
-	for key in input_data:
-		words[key] = words.get(key, 0) + 1
+	#for key in input_data:
+	#	words[key] = words.get(key, 0) + 1
 
+	
 	response.status = 200
 	response.headers['Access-Control-Allow-Origin'] = '*'
+	 #words Table - word, word_id
+	 #Inverted - word_id, doc_id
+	 #docs - doc_id, URL, rank
+
+	line = request.body.read().split()[0]
+	conn = sqlite3.connect('currybowl.db')
+	c = conn.cursor()
+	t = (line,)
+	URL_data = {}
+
+	c.execute('SELECT id FROM words WHERE word=?', t)
+	q1 = c.fetchone()
+	print "q1: ",q1
+	if q1 is None:
+		return URL_data
+	documents = q1[0]
+	t = (documents,)
+	c.execute('SELECT doc_ids FROM Inverted WHERE word_id = ?', t)
+	#if c.fetchone() is None:
+	#	print "LOOP"
+	#	return json.dumps(URL_data)
+	q2 = c.fetchone()
+	print "q2: ",q2
+	if q2 is None:
+		return URL_data
+	print "q2: ",q2
+	documents = q2[0].split(",")
+
+	print documents
+	for i in documents:
+		t = (str(i),)
+		c.execute('SELECT doc, score FROM docs WHERE id = ?', t)
+		output = c.fetchone()
+		print "key:" , output[0]
+		print "value: " , output [1]
+		URL_data[output[0]] = output [1]
+	sorted_URL_data = sorted(URL_data, key=URL_data.get, reverse=True)
+	print sorted_URL_data
+
+	return json.dumps(sorted_URL_data)
+	
 
 
 @route('/history', method='GET')
@@ -124,7 +168,10 @@ def history():
 	response.headers['Access-Control-Allow-Origin'] = '*'
 	sorted_words = sorted(words.items(), key=operator.itemgetter(1))
 	first_20 = sorted_words[-20:]
+
 	return json.dumps(first_20[::-1])
+
+
 
 
 @route('/recent', method='GET')
