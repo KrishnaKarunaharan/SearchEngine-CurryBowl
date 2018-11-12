@@ -2,7 +2,7 @@ from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.client import flow_from_clientsecrets
 from googleapiclient.errors import HttpError
 from googleapiclient.discovery import build
-from bottle import route, run, request, response, redirect, static_file
+from bottle import route, run, request, response, redirect, static_file, error
 import json
 import operator
 import httplib2
@@ -150,6 +150,7 @@ def submit():
 		t = (str(i),)
 		c.execute('SELECT doc, score FROM docs WHERE id = ?', t)
 		output = c.fetchone()
+		print output
 		print "key:" , output[0]
 		print "value: " , output [1]
 		URL_data[output[0]] = output [1]
@@ -188,6 +189,10 @@ def user():
 	if current_user.email == "empty":
 		return ""
 	return "Name: ", current_user.name, " Email: ", current_user.email
+
+@error(404)
+def not_found(error):
+	return static_file("error.html", root='')
 
 
 run(host=ip, port=port, debug=True)

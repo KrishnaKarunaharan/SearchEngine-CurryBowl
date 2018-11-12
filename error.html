@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"/>
+    <head>
+	<style>
+        .center{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 40%;
+    		border: 10px solid #f3a3c2;
+    		border-radius: 4px;
+   			top: 50%; 
+			
+        }
+        .button {
+
+ 			display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 40%;
+    		border: 10px solid #f3a3c2;
+    		border-radius: 4px;
+   			top: 50%; 
+
+
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none; 
+            font-size: 16px;
+            cursor: pointer;
+			text-align: center;
+        }
+        </style>
+       
+    </head>
+    <body>  
+		<p style="text-align:center; font-size: 50px; ">Error 404. Looks like this page doesnt exist...</p> 
+		<img class="center" src="error.jpg">
+		</br>
+		<button class="button" onclick="goBack()">Go Back</button>
+
+	<script>
+		function goBack() {
+			document.location.href="/";
+		}
+	</script>
+    </body>
+
+</html>
