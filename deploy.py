@@ -1,12 +1,11 @@
 from boto import ec2
 import os, sys
 
-if len(sys.argv) != 3:
-    print "Usage:",sys.argv[0],"<key> <project_dir>"
+if len(sys.argv) != 2:
+    print "Usage:",sys.argv[0],"<key>"
     exit()
 
 key = sys.argv[1]
-project_dir = sys.argv[2]
 
 conn = ec2.connect_to_region("us-east-1")
 reservations = conn.get_all_instances()
@@ -31,4 +30,9 @@ print "Crawling and initializing database..."
 import run_backend_test
 
 print "Deploying files..."
-os.system("rsync -e \"ssh -i" + key +"\" -av " + project_dir + " ubuntu@" + inst.ip_address + ":~")
+
+while os.system("rsync -e \"ssh -i " + key +" -o StrictHostKeyChecking=no\" -av " + sys.path[0] + " ubuntu@" + inst.ip_address + ":~ 2> /dev/null") != 0:
+    pass
+
+print "Deployed! Use the following command to access:\n"
+print "ssh -i " + key + " ubuntu@" + inst.ip_address

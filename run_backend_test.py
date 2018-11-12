@@ -1,7 +1,8 @@
 from crawler import crawler
 import os
+import sys
 
-bot = crawler(None, "urls.txt")
+bot = crawler(None, sys.path[0]+"/urls.txt")
 bot.crawl(depth=1)
 pr = bot.get_page_rank()
 
