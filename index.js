@@ -1,6 +1,6 @@
 
 function inputParsing() {
-    input = (document.getElementById("keywords").value).toLowerCase();
+    input = (document.getElementById("lookupText").value).toLowerCase();
     localStorage.setItem("array", input);
     submit();
 }
@@ -39,7 +39,7 @@ function submit() {
             var numberResults; 
             var elapsedTime = ((Date.now() - startTime) / 1000).toFixed(3);
             (response[0] == null) ? numberResults = 0 : numberResults = response.length;
-            document.getElementById("numberResults").innerHTML = "About " + numberResults + " results (" + elapsedTime + " seconds)"; 
+            document.getElementById("numberResults").innerHTML = "<b>About " + numberResults + " results (" + elapsedTime + " seconds)</b>"; 
 
             if (numberResults > 5){
                 document.getElementById("loadMore").style.visibility = "visible";
@@ -49,9 +49,13 @@ function submit() {
                     localStorage.setItem("loadMore", response.slice(5,response.length));
                     break;
                 }    
-                content += "<p><a href=" + response[obj]  + "> " + response[obj] + "</a></p>";
+                content += "<p class='links'><a class='linkpreview' href=" + response[obj]  + "> " + response[obj] + "</a></p>";
             }
-            document.getElementById("crawlerResults").innerHTML = content;          
+            document.getElementById("crawlerResults").innerHTML = content;
+
+
+
+
 
         }
 	};
@@ -164,5 +168,4 @@ function currentUser() {
     xhttp.send(null);
     
 }
-
 
