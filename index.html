@@ -1,155 +1,132 @@
 <!doctype html>
 <html lang="en">
-<meta charset="utf-8"/>
-    <head>
-        <title>Curry Bowl Search Engine</title>
-        <link rel="stylesheet" href="index.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <style>
-        .center{
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 40%;
-        }
-        table{
-            border: 1px solid black;
-            margin-bottom: 1%;
-        }
-        th, td {
-            border: 1px solid black;
-        }
-        .button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-        .button5 {
-            background-color: #555555;
-        }
+   <meta charset="utf-8"/>
+   <head>	
+      <title>Curry Bowl Search Engine</title>
+      <link rel="stylesheet" href="index.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <style>
+         .center{
+         display: block;
+         margin-left: auto;
+         margin-right: auto;
+         width: 40%;
+         }
+         table{
+         border: 1px solid black;
+         margin-bottom: 1%;
+         }
+         th, td {
+         border: 1px solid black;
+         }
+         .button {
+         background-color: #4CAF50; /* Green */
+         border: none;
+         color: white;
+         padding: 15px 32px;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 16px;
+         margin: 4px 2px;
+         cursor: pointer;
+         }
+         .button5 {
+         background-color: #555555;
+         }
+         .link-preview img {
+         max-height: 120px;
+         max-width: 100%;
+         }
+         .link-preview h4 {
+         margin-top: 0;
+         }
+         .link-preview .alert {
+         margin-bottom: 0;
+         }
+         .displayblocks {
+         padding: 20px;
+         margin:100px
+         width: 100px; 
+         float:left;
+         }
+      </style>
+   </head>
+   <body>
+<!-- Adding javascript files for Word Check, Bootstrap, UI extras -->
+      <script src="english_word_list.js"></script>
+      <script src="spellchecker.js"></script>
+      <script charset="UTF-8">
+         set_valid_word_list(english_word_list);
+      </script>
+      <script src="ui.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="index.js"></script>
 
-        .link-preview img {
-            max-height: 120px;
-            max-width: 100%;
-        }
-        .link-preview h4 {
-            margin-top: 0;
-        }
-        .link-preview .alert {
-            margin-bottom: 0;
-        }
-
-        .displayblocks {
-            padding: 20px;
-            margin:100px
-            width: 100px; 
-            float:left;
-        }
-        </style>
-    </head>
-    <body>
-
-        <script src="english_word_list.js"></script>
-        <script src="spellchecker.js"></script>
-        <script charset="UTF-8">
-            set_valid_word_list(english_word_list);
-        </script>
-        <script src="ui.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-
-        <script src="index.js"></script>
-        <button class="btn" id="login" style="float:right"></button>
-        <p id ="user" style="text-align: center;"></p>
-        <p class="center">
-            <img src="logo.png" style="width:350px;height:240px;" class="center">
-            <br>
-            <input autofocus="autofocus" style="font-size: 16px" type="text" id="lookupText" onchange="wordTyped()" oninput="wordTyped()" onpaste="wordTyped()" class="form-control" placeholder="Enter something...">
-           
-            <br>
-            <input onclick="inputParsing()" type="submit" value="Search" class="center">
-            <button class="center" id="start-record-btn" title="Start Recording">Start Speech Recognition</button>
-            <p  style="text-align: center;" class="center" id="recording-instructions" class="center">Press the <strong >Start Recognition</strong> button and allow access.</p>
-            <div class="displayblocks" id="results"></div>
-        </p>
-
-
-
-
-
-        <div id="results_div" style='display:none'>
-            <thead style='display:none'>Query Results</thead>
-            <table id='results' style='width:100%' align='right'>
-                    </tbody>
-                <tr>
-                    <th>Word</th>
-                    <th>Count</th>
-                    <tbody id="results_content">
-                </tr>
-            </table>
-
-        </div>
-
-        <div id="history_div" style='display:none'>
-            <thead>Popular Keywords</thead>
-            <table id='history' style='width:100%' align='right'>
-                <tr>
-                    <th>Word</th>
-                    <th>Count</th>
-                    <tbody id="history_content">
-                    </tbody>
-                </tr>
-            </table>
-        </div>
-
-        <div id="recent_div" style='display:none'>
-            <thead>Recent Searches</thead>
-            <table id='recent' style='width:100%' align='right'>
-                <tr>
-                    <th>Word</th>
-                    <tbody id="recent_content">
-                    </tbody>
-                </tr>
-            </table>
-        </div>
-
-        <div class="displayblocks" >
-        <div id='numberResults' ></div> <br>
-            <ul id='crawlerResults'  style="list-style-type:square">
-        </ul>
-
-        <div class="displayblocks">
-
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                <script src="script.js"></script>
-        </div>
-      
-
-        <div style="margin:3em;">
-
-<button class="button button5" style='visibility:hidden' id='loadMore' onclick="LoadMore()" >Load More</button>
-   </div>
-<br>
-  <br>
-</div>
-
-
-    </body>
-
-    <script type="text/javascript">
-        currentUser();
-        history();
-        recent();
-    </script>
-
-
-
+      <button class="btn" id="login" style="float:right"></button>
+      <p id ="user" style="text-align: center;"></p>
+      <p class="center">
+         <img src="logo.png" style="width:350px;height:240px;" class="center">
+         <br>
+         <input autofocus="autofocus" style="font-size: 16px" type="text" id="lookupText" onchange="wordTyped()" oninput="wordTyped()" onpaste="wordTyped()" class="form-control" placeholder="Enter something...">
+         <br>
+         <input onclick="inputParsing()" type="submit" value="Search" class="center">
+         <button class="center" id="start-record-btn" title="Start Recording">Start Speech Recognition</button>
+      <p  style="text-align: center;" class="center" id="recording-instructions" class="center">Press the <strong >Start Recognition</strong> button and allow access.</p>
+      <div class="displayblocks" id="results"></div>
+      </p>
+      <div id="results_div" style='display:none'>
+         <thead style='display:none'>Query Results</thead>
+         <table id='results' style='width:100%' align='right'>
+            </tbody>
+            <tr>
+               <th>Word</th>
+               <th>Count</th>
+            <tbody id="results_content">
+               </tr>
+         </table>
+      </div>
+      <div id="history_div" style='display:none'>
+         <thead>Popular Keywords</thead>
+         <table id='history' style='width:100%' align='right'>
+            <tr>
+               <th>Word</th>
+               <th>Count</th>
+            <tbody id="history_content">
+            </tbody>
+            </tr>
+         </table>
+      </div>
+      <div id="recent_div" style='display:none'>
+         <thead>Recent Searches</thead>
+         <table id='recent' style='width:100%' align='right'>
+            <tr>
+               <th>Word</th>
+            <tbody id="recent_content">
+            </tbody>
+            </tr>
+         </table>
+      </div>
+      <div class="displayblocks" >
+         <div id='numberResults' ></div>
+         <br>
+         <ul id='crawlerResults'  style="list-style-type:square">
+         </ul>
+         <div class="displayblocks">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="script.js"></script>
+         </div>
+         <div style="margin:3em;">
+            <button class="button button5" style='visibility:hidden' id='loadMore' onclick="LoadMore()" >Load More</button>
+         </div>
+         <br>
+         <br>
+      </div>
+   </body>
+   <script type="text/javascript">
+      currentUser();
+      history();
+      recent();
+   </script>
 </html>
