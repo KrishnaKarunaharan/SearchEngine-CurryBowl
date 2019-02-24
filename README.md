@@ -1,5 +1,8 @@
 # CurryBowl
 
+## Description
+Search Engine that utilizes, 
+
 ## Running locally
 Please use the `master` branch when running the webserver locally by running the python script `server.py`. When running on an EC2 instance, use the `aws-ec2` branch and run the script as `sudo`.
 
