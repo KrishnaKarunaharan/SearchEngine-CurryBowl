@@ -11,7 +11,8 @@ Search Engine that utilizes Crawler.py to scrap HTML data from a website to a sp
 
 Features:
 - Voice Recnogiztion (Using Web Speech API https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
-- Spelling Correction (
+- Spelling Correction (Using free client-side spell checking library https://github.com/MichaelWehar/Open-Source-Spell-Checker)
+- Google Authentication services to link account to application
 
 ## Running locally
 Please use the `master` branch when running the webserver locally by running the python script `server.py`. When running on an EC2 instance, use the `aws-ec2` branch and run the script as `sudo`.
