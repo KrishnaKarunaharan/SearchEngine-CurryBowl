@@ -1,12 +1,17 @@
 # CurryBowl
 Developed basic search engine using Crawler.py using AWS and Google Authentication services. Final project for CSC326 (Computer Languages Fundementals).
 
+![image](https://i.imgur.com/UtOW4PD.png)
 
 
 Created by: Krishna Karunaharan & Garauv Kishore
 
 ## Description
-Search Engine that utilizes, 
+Search Engine that utilizes Crawler.py to scrap HTML data from a website to a specficed depth, in order to create entries for a search engine index. Our implmentation currently only scrapping 2 websites (https://www.serebii.net/ and https://www.ece.utoronto.ca/). If you notice any bugs/errors, please let me know!
+
+Features:
+- Voice Recnogiztion (Using Web Speech API https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
+- Spelling Correction (
 
 ## Running locally
 Please use the `master` branch when running the webserver locally by running the python script `server.py`. When running on an EC2 instance, use the `aws-ec2` branch and run the script as `sudo`.
