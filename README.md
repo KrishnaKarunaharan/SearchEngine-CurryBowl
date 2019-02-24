@@ -1,4 +1,9 @@
 # CurryBowl
+Developed basic search engine using Crawler.py using AWS and Google Authentication services. Final project for CSC326 (Computer Languages Fundementals).
+
+
+
+Created by: Krishna Karunaharan & Garauv Kishore
 
 ## Description
 Search Engine that utilizes, 
